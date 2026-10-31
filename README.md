@@ -1,10 +1,10 @@
-# rigz labz website
+# Rigz Labz website
 
 **Live at: https://p-rigz.github.io**
 
 Instagram: https://www.instagram.com/p_rigz/ · Hevy: https://hevy.com/user/prigz
 
-The home of **rigz labz**, my personal projects. Right now it's a one-page showcase for **rigz liftz**, my gym dashboard, which turns my Hevy workouts into stats, a dashboard and Instagram cards, plus the privacy policy for its Google sign-in. It uses data from Hevy but is not affiliated with or endorsed by Hevy. The tool itself lives in a separate private repo (`P-Rigz/hevy-local`); this repo only holds the public website.
+The home of **Rigz Labz**, my personal projects. Right now it's a one-page showcase for **Rigz Liftz**, my gym dashboard, which turns my Hevy workouts into stats, a dashboard and Instagram cards, plus the privacy policy for its Google sign-in. It uses data from Hevy but is not affiliated with or endorsed by Hevy. The tool itself lives in a separate private repo (`P-Rigz/hevy-local`); this repo only holds the public website.
 
 ## What's here
 
@@ -18,7 +18,7 @@ The home of **rigz labz**, my personal projects. Right now it's a one-page showc
 
 ## Don't break these
 
-The Google sign-in for the story-cards job (Google Cloud project **rigz liftz**, project ID `rigz-hevy`, which Google doesn't allow to be changed; Branding page) points at:
+The Google sign-in for the story-cards job (Google Cloud project **Rigz Liftz**, project ID `rigz-hevy`, which Google doesn't allow to be changed; Branding page) points at:
 
 - Home page: `https://p-rigz.github.io`
 - Privacy policy: `https://p-rigz.github.io/privacy.html`
