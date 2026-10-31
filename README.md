@@ -16,6 +16,13 @@ The home of **Rigz Labz**, my personal projects. Right now it's a one-page showc
 | `img/` | Web-sized copies of cards and dashboard screenshots, the logo, favicon and link preview (`og.png`) |
 | `fonts/Figtree.ttf` | Figtree font, self-hosted (SIL Open Font License, see `fonts/OFL.txt`) |
 
+## Logos
+
+- `img/logo-liftz.png` (RIGZ + dumbbell): **Rigz Liftz**, the gym tool. Currently in the site header.
+- `img/logo-labz.png` (RIGZ + beaker): **Rigz Labz**, the parent brand. Currently in the footer.
+
+**When a second tool is added:** the site becomes the Rigz Labz home, so the **header switches to the Labz logo**, and each tool's own section or page uses its own logo (Liftz for the gym tool). The logo versions are made by `assets/make_logo_variants.py` in the `hevy-local` repo.
+
 ## Don't break these
 
 The Google sign-in for the story-cards job (Google Cloud project **Rigz Liftz**, project ID `rigz-hevy`, which Google doesn't allow to be changed; Branding page) points at:
