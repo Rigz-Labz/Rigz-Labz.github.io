@@ -2,6 +2,8 @@
 
 **Live at: https://p-rigz.github.io**
 
+Instagram: https://www.instagram.com/p_rigz/ · Hevy: https://hevy.com/user/prigz
+
 A one-page showcase for RIGZ Hevy, my personal tool that turns my Hevy workouts into stats, a dashboard and Instagram cards, plus the privacy policy for its Google sign-in. The tool itself lives in a separate private repo (`P-Rigz/hevy-local`); this repo only holds the public website.
 
 ## What's here
