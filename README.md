@@ -1,6 +1,6 @@
 # Rigz Labz website
 
-**Live at: https://p-rigz.github.io**
+**Live at: https://rigz-labz.github.io**
 
 Instagram: https://www.instagram.com/p_rigz/ · Hevy: https://hevy.com/user/prigz
 
@@ -20,9 +20,9 @@ The home of **Rigz Labz**, my personal projects. Right now it's a one-page showc
 
 The Google sign-in for the story-cards job (Google Cloud project **Rigz Liftz**, project ID `rigz-hevy`, which Google doesn't allow to be changed; Branding page) points at:
 
-- Home page: `https://p-rigz.github.io`
-- Privacy policy: `https://p-rigz.github.io/privacy.html`
-- Authorised domain: `p-rigz.github.io`
+- Home page: `https://rigz-labz.github.io`
+- Privacy policy: `https://rigz-labz.github.io/privacy.html`
+- Authorised domain: `rigz-labz.github.io`
 
 Keep both pages online and keep the link to `privacy.html` on the home page, or Google can stop accepting the app.
 
