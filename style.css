@@ -151,7 +151,7 @@ figcaption b { color: var(--text); }
 footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--muted); font-size: 15px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }
 footer img { height: 34px; width: auto; }
-footer img.labz { height: 45px; }
+footer img.liftz { height: 45px; }
 footer nav a { margin-right: 18px; }
 footer .small { font-size: 13px; color: #6f6f6f; margin: 6px 0 0; }
 

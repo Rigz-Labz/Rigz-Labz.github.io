@@ -18,10 +18,10 @@ The home of **Rigz Labz**, my personal projects. Right now it's a one-page showc
 
 ## Logos
 
-- `img/logo-liftz.png` (RIGZ + dumbbell): **Rigz Liftz**, the gym tool. Currently in the site header.
-- `img/logo-labz.png` (RIGZ + beaker): **Rigz Labz**, the parent brand. Currently in the footer.
+- `img/logo-labz.png` (RIGZ + beaker): **Rigz Labz**, the parent brand. In the site header.
+- `img/logo-liftz.png` (RIGZ + dumbbell): **Rigz Liftz**, the gym tool. In the footer of the Liftz page.
 
-**When a second tool is added:** the site becomes the Rigz Labz home, so the **header switches to the Labz logo**, and each tool's own section or page uses its own logo (Liftz for the gym tool). The logo versions are made by `assets/make_logo_variants.py` in the `rigz-liftz` repo.
+The header always carries the Rigz Labz logo; each tool's own section or page uses its own logo. The logo versions are made by `assets/make_logo_variants.py` in the `rigz-liftz` repo.
 
 ## Don't break these
 
