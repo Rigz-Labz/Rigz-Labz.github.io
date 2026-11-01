@@ -4,7 +4,7 @@
 
 Instagram: https://www.instagram.com/p_rigz/ · Hevy: https://hevy.com/user/prigz
 
-The home of **Rigz Labz**, my personal projects. Right now it's a one-page showcase for **Rigz Liftz**, my gym dashboard, which turns my Hevy workouts into stats, a dashboard and Instagram cards, plus the privacy policy for its Google sign-in. It uses data from Hevy but is not affiliated with or endorsed by Hevy. The tool itself lives in a separate private repo (`P-Rigz/hevy-local`); this repo only holds the public website.
+The home of **Rigz Labz**, my personal projects. Right now it's a one-page showcase for **Rigz Liftz**, my gym dashboard, which turns my Hevy workouts into stats, a dashboard and Instagram cards, plus the privacy policy for its Google sign-in. It uses data from Hevy but is not affiliated with or endorsed by Hevy. The tool itself lives in a separate private repo (`Rigz-Labz/rigz-liftz`); this repo only holds the public website.
 
 ## What's here
 
@@ -21,7 +21,7 @@ The home of **Rigz Labz**, my personal projects. Right now it's a one-page showc
 - `img/logo-liftz.png` (RIGZ + dumbbell): **Rigz Liftz**, the gym tool. Currently in the site header.
 - `img/logo-labz.png` (RIGZ + beaker): **Rigz Labz**, the parent brand. Currently in the footer.
 
-**When a second tool is added:** the site becomes the Rigz Labz home, so the **header switches to the Labz logo**, and each tool's own section or page uses its own logo (Liftz for the gym tool). The logo versions are made by `assets/make_logo_variants.py` in the `hevy-local` repo.
+**When a second tool is added:** the site becomes the Rigz Labz home, so the **header switches to the Labz logo**, and each tool's own section or page uses its own logo (Liftz for the gym tool). The logo versions are made by `assets/make_logo_variants.py` in the `rigz-liftz` repo.
 
 ## Don't break these
 
@@ -36,7 +36,7 @@ Keep both pages online and keep the link to `privacy.html` on the home page, or 
 ## Updating
 
 - **Stats** on the page are typed in by hand and frozen at a date (shown under the numbers). Update the numbers and the "as of" date together.
-- **Images** come from the tool: generate cards or screenshots in `hevy-local`, save them into `img/` as WebP (cards 720 px wide, screenshots 1400 px), and keep the `width`/`height` attributes in `index.html` matching.
+- **Images** come from the tool: generate cards or screenshots in `rigz-liftz` (on the Mac: `~/hevy-local`), save them into `img/` as WebP (cards 720 px wide, screenshots 1400 px), and keep the `width`/`height` attributes in `index.html` matching.
 - **Never publish** API keys, workout times or locations, other people's names, or anything from the private repo's `data/` or `.env`.
 
 Preview locally:
