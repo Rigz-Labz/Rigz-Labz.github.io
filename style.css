@@ -161,6 +161,22 @@ figcaption b { color: var(--text); }
 .tool .go { color: var(--green); font-weight: 800; }
 .top nav a[aria-current="page"] { color: var(--green); }
 
+/* Rigz Labz landing */
+.hero.labz { padding: 64px 0 32px; }
+.labz-logo { width: 180px; margin-bottom: 26px; filter: drop-shadow(0 0 40px rgba(0, 255, 0, .18)); }
+.tools-section { padding-top: 24px; }
+.tools { display: grid; gap: 18px; }
+@media (min-width: 820px) { .tools { grid-template-columns: repeat(2, 1fr); } }
+.tool.big { flex-direction: column; align-items: flex-start; gap: 14px; padding: 30px; }
+.tool.big img { width: 150px; }
+.tool.big h3 { font-size: 28px; margin: 0; }
+.tool.big div, .tool.big p { flex: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags span {
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px;
+  padding: 4px 12px; font-size: 13px; font-weight: 700; color: var(--soft);
+}
+
 /* Footer */
 footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--muted); font-size: 15px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }

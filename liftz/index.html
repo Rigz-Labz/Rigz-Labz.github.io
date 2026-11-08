@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rigz Liftz · I built my own gym dashboard</title>
+<meta name="description" content="Rigz Liftz, a Rigz Labz project: a personal gym dashboard that turns my Hevy workouts into stats, a dashboard and Instagram cards, straight from my phone.">
+<meta property="og:title" content="I built my own gym dashboard">
+<meta property="og:description" content="My Hevy workouts, made into Instagram cards straight from my phone.">
+<meta property="og:image" content="https://rigz-labz.github.io/img/og.png">
+<meta property="og:url" content="https://rigz-labz.github.io/liftz/">
+<meta property="og:site_name" content="Rigz Labz">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="../img/favicon.png">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="../"><img src="../img/logo-labz.png" alt="Rigz Labz" width="70" height="41"></a>
+    <nav>
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#gym">Gym to story</a>
+      <a class="hide-sm" href="#cards">Cards</a>
+      <a href="./" aria-current="page">Liftz</a>
+      <a href="../arrowz/">Arrowz</a>
+      <a href="https://www.instagram.com/p_rigz/">@p_rigz</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap grid">
+    <div>
+      <p class="kicker"><span class="name">Rigz Liftz</span> · Built with Claude Code</p>
+      <h1>I built my own <span class="g">gym dashboard</span></h1>
+      <p class="lead">My Hevy workouts, pulled into my own app, turned into Instagram cards in my colours, and on my phone before I've left the gym car park.</p>
+      <a class="btn solid" href="#gym">See it in action</a><a class="btn ghost" href="https://www.instagram.com/p_rigz/">Follow @p_rigz</a><a class="btn ghost" href="https://hevy.com/user/prigz">Follow on Hevy</a>
+    </div>
+    <div class="phone">
+      <img src="../img/story.webp" alt="Story card for Personal Training 2: 1 hour 21 minutes, 14,708 kg, 32 sets, 4 PRs, with every exercise and best set listed" width="540" height="960" fetchpriority="high">
+    </div>
+  </div>
+</section>
+
+<section style="padding-top: 0">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>115</b><span>workouts</span></div>
+      <div class="stat"><b>27</b><span>week streak</span></div>
+      <div class="stat"><b>877,289</b><span>kg lifted</span></div>
+      <div class="stat"><b>114</b><span>hours training</span></div>
+    </div>
+    <p class="note">Since 3 May 2026, as of 31 October 2026.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>From set logged to story posted</h2>
+    <p class="lead"><a href="https://hevy.com/user/prigz">Hevy</a> is where I log every set. This is everything I wanted on top of it.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Pull the data</h3><p>Hevy's API copies every workout into a database I own. 115 workouts so far.</p></div>
+      <div class="step"><div class="n">2</div><h3>Crunch it</h3><p>Estimated 1RMs, PRs, volume, sets per muscle group, streaks. It even flags sets that look like typos.</p></div>
+      <div class="step"><div class="n">3</div><h3>Make the cards</h3><p>Every session becomes a black and green RIGZ card, sized for feed posts, stories and carousels.</p></div>
+      <div class="step"><div class="n">4</div><h3>Look back</h3><p>A dashboard with a clickable training calendar, records, comparisons and weekly or monthly reports.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="gym" class="feature">
+  <div class="wrap">
+    <p class="kicker">GitHub Actions</p>
+    <h2>From the gym floor to my story</h2>
+    <p class="lead">I train before work and my laptop stays shut at home. So the cards get made in the cloud: one tap on my phone and they land in Google Drive about a minute later.</p>
+
+    <div class="flow">
+      <div class="card">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 20v8M12 15v18M12 24h24M36 15v18M42 20v8"/></svg>
+        <div class="when">0:00</div>
+        <h3>Finish in Hevy</h3>
+        <p>Last set done, tap Finish like always.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="4" width="24" height="40" rx="5"/><path d="M21 18l9 6-9 6z"/></svg>
+        <div class="when">0:10</div>
+        <h3>Tap Run workflow</h3>
+        <p>In the GitHub app on my phone. That's the only thing I do.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 34a8 8 0 0 1-1-15.9A11 11 0 0 1 34 16a8 8 0 0 1 1 16"/><path d="M24 24v16M18 34l6 6 6-6"/></svg>
+        <div class="when">0:10 to 1:00</div>
+        <h3>GitHub does the rest</h3>
+        <p>Fetches the workout, draws the story card and the "that's like lifting" card, and uploads both to Drive.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="32" height="32" rx="10"/><circle cx="24" cy="24" r="7"/><circle cx="33" cy="15" r="1.5"/></svg>
+        <div class="when">1:05</div>
+        <h3>Share to Stories</h3>
+        <p>Open Drive, tap the card, share to Instagram. Posted before I'm out of the car park.</p>
+      </div>
+    </div>
+
+    <div class="run" role="img" aria-label="A real workflow run: set up, check for a new workout, make the cards, upload to Google Drive, completed in 48 seconds">
+      <div class="bar"><b>story cards</b><span>Run workflow · main</span></div>
+      <ol>
+        <li>Set up Python and Google Drive <span>34s</span></li>
+        <li>Anything new? Latest: Personal Training 2 <span>2s</span></li>
+        <li>Make the cards: story + volume <span>2s</span></li>
+        <li>Upload to Google Drive: 2 files <span>2s</span></li>
+        <li>Completed <span>48s</span></li>
+      </ol>
+    </div>
+
+    <div class="points">
+      <div><h3>Laptop stays shut</h3><p>It runs on GitHub's servers, not my Mac, so it works wherever I am.</p></div>
+      <div><h3>Private by design</h3><p>Private repo, encrypted secrets, and Drive access limited to the files it makes itself.</p></div>
+      <div><h3>Costs nothing</h3><p>About a minute a workout, well inside GitHub's free allowance.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cards">
+  <div class="wrap">
+    <p class="kicker">The cards</p>
+    <h2>That's like lifting<span class="g">…</span></h2>
+    <p class="lead">Every session's volume compared with something I actually care about: F1, Star Wars, Star Trek, NASA, Warhammer 40k, Critical Role. Every icon drawn from scratch.</p>
+    <div class="gallery">
+      <figure><img src="../img/vol-f1.webp" alt="Volume card: 4,870 kg is like lifting 6.3 F1 cars" width="720" height="960" loading="lazy"><figcaption><b>Leg day:</b> 6.3 F1 cars</figcaption></figure>
+      <figure><img src="../img/vol-r2d2.webp" alt="Volume card: 14,708 kg is like lifting 460 R2-D2s" width="720" height="960" loading="lazy"><figcaption><b>Friday:</b> 460 R2-D2s</figcaption></figure>
+      <figure><img src="../img/vol-enterprise.webp" alt="Volume card: 877,289 kg all time is 0.46% of the USS Enterprise" width="720" height="960" loading="lazy"><figcaption><b>All time:</b> 0.46% of the Enterprise</figcaption></figure>
+    </div>
+
+    <h2 class="subhead">Every session, a card</h2>
+    <div class="gallery">
+      <figure><img src="../img/workout.webp" alt="Workout card listing each exercise with PRs flagged first" width="720" height="960" loading="lazy"><figcaption><b>Workout:</b> PRs flagged first</figcaption></figure>
+      <figure><img src="../img/progress.webp" alt="Progress card: Leg Press estimated 1RM trend" width="720" height="960" loading="lazy"><figcaption><b>Progress:</b> 1RM trend per lift</figcaption></figure>
+      <figure><img src="../img/highlights.webp" alt="Monthly highlights card for September 2026 listing personal records" width="720" height="960" loading="lazy"><figcaption><b>Reports:</b> weekly and monthly highlights</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="wrap">
+    <p class="kicker">The dashboard</p>
+    <h2>All of it, in one place</h2>
+    <p class="lead">Runs on my Mac. One command opens it, already synced.</p>
+    <div class="shots">
+      <figure><img src="../img/dash-overview.webp" alt="Dashboard overview: 115 workouts, 4.3 per week, 114 hours, weekly volume and workouts per week charts" width="1400" height="771" loading="lazy"><figcaption><b>Overview:</b> every week since May</figcaption></figure>
+      <figure><img src="../img/dash-calendar.webp" alt="Training calendar with a day selected, showing that session's stats and exercises" width="1400" height="919" loading="lazy"><figcaption><b>Calendar:</b> click any day for the full breakdown and its cards</figcaption></figure>
+      <figure><img src="../img/dash-compare.webp" alt="Compare tab: last 4 weeks against the 4 before, per-week rates and charts" width="1400" height="634" loading="lazy"><figcaption><b>Compare:</b> any two periods, side by side</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="built">
+  <div class="wrap">
+    <p class="kicker">Built with</p>
+    <h2>Built in a day with Claude Code</h2>
+    <p class="lead"><span class="g">Rigz Liftz</span> is the first <span class="g">Rigz Labz</span> project. Then improved a bit at a time: branding, reports, typo checks, and the phone workflow.</p>
+    <div class="chips">
+      <span class="hl">Claude Code</span><span class="hl">GitHub Actions</span><span>Hevy API</span><span>Python</span><span>pandas</span>
+      <span>Pillow</span><span>SQLite</span><span>Streamlit</span><span>Plotly</span><span>Altair</span><span>rclone</span><span>Google Drive</span>
+    </div>
+  </div>
+</section>
+
+<section id="more" class="more">
+  <div class="wrap">
+    <p class="kicker">More from Rigz Labz</p>
+    <a class="tool" href="../arrowz/">
+      <img src="../img/logo-arrowz.png" alt="" width="120" height="69" loading="lazy">
+      <div>
+        <h3>Rigz Arrowz</h3>
+        <p>My archery practice: Archery GB handicaps, where my arrows land, and cards for every round.</p>
+      </div>
+      <span class="go">See it</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img class="liftz" src="../img/logo-liftz.png" alt="Rigz Liftz" width="78" height="45">
+    <div>
+      <p style="margin:0"><span class="g">Rigz Liftz</span> is a <span class="g">Rigz Labz</span> project: a personal tool for my own training. It isn't a public service.</p>
+      <p class="small">Uses workout data from Hevy. Not affiliated with or endorsed by Hevy.</p>
+    </div>
+    <nav><a href="../privacy.html">Privacy policy</a><a href="https://www.instagram.com/p_rigz/">Instagram</a><a href="https://hevy.com/user/prigz">Hevy</a></nav>
+  </div>
+</footer>
+
+</body>
+</html>
