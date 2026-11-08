@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Upload</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { color-scheme: dark; --green: #00ff00; --muted: #9a9a9a; --panel: #111; --line: #262626; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #000; color: #fff; font: 17px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 480px; margin: 0 auto; padding: 32px 16px; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  p { color: var(--muted); margin: 0 0 18px; }
+  button, label.pick {
+    display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 14px; font: 700 17px/1 inherit;
+    text-align: center; border: 2px solid var(--green); background: none; color: var(--green); cursor: pointer;
+  }
+  button.solid { background: var(--green); color: #000; }
+  button:disabled { opacity: .35; cursor: default; }
+  input[type=file] { display: none; }
+  ul { list-style: none; padding: 0; margin: 8px 0; }
+  li { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: 6px 0;
+       font-size: 14px; word-break: break-all; display: flex; justify-content: space-between; gap: 10px; }
+  li span { color: var(--muted); white-space: nowrap; }
+  li.ok span { color: var(--green); }
+  li.bad span { color: #ff6b6b; }
+  #status { min-height: 24px; color: var(--muted); }
+  a { color: var(--green); }
+  .next { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Upload</h1>
+  <p>My Data export and scorecards, into the inbox.</p>
+
+  <button id="signin" class="solid">Sign in with Google</button>
+  <label class="pick" id="pickLabel" hidden>Choose files<input id="files" type="file" multiple accept=".zip,.pdf,application/zip,application/pdf"></label>
+  <ul id="list"></ul>
+  <button id="upload" class="solid" hidden disabled>Upload</button>
+  <p id="status"></p>
+  <p class="next" id="next">Done. Now run the cards: <a href="https://github.com/Rigz-Labz/rigz-arrowz/actions/workflows/arrowz-cards.yml">arrowz cards</a></p>
+</main>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+// Uploads go into a folder this app created, using Drive's narrowest access (drive.file):
+// the page can only ever see files it made itself. Only the owner's account is let through.
+const CLIENT_ID = "326798269524-807n5rl7ojbnt9kcj72orcoue61jijkn.apps.googleusercontent.com";
+const FOLDER = "RIGZ Arrowz inbox";
+const OWNER_SHA256 = [   // SHA-256 of the owner's email address(es), so the address isn't in the page
+  "6d869a1cc82c282a75e36947c01ca3ebb73753b5d5fb63e70e8229801c9385a7",
+  "be9996d894a0862855f1892742d1c573dac7d1f08266cfa65eb20faad6d061af",
+];
+const API = "https://www.googleapis.com/drive/v3";
+let token = null, folderId = null, client = null;
+const $ = id => document.getElementById(id);
+const status = t => { $("status").textContent = t; };
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text.trim().toLowerCase()));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function drive(path, opts = {}) {
+  const r = await fetch(path.startsWith("http") ? path : API + path,
+                        { ...opts, headers: { Authorization: `Bearer ${token}`, ...(opts.headers || {}) } });
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  return r.json();
+}
+
+async function findFolder() {
+  const q = encodeURIComponent(`name='${FOLDER}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+  const found = await drive(`/files?q=${q}&fields=files(id)&spaces=drive`);
+  if (found.files.length) return found.files[0].id;
+  const made = await drive("/files?fields=id", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: FOLDER, mimeType: "application/vnd.google-apps.folder" }) });
+  return made.id;
+}
+
+async function signedIn(resp) {
+  if (resp.error) { status("Sign-in didn't complete."); return; }
+  token = resp.access_token;
+  try {
+    const me = await drive("/about?fields=user(emailAddress)");
+    if (!OWNER_SHA256.includes(await sha256(me.user.emailAddress))) {
+      token = null; status("This page isn't for this account."); return;
+    }
+    folderId = await findFolder();
+    $("signin").hidden = true; $("pickLabel").hidden = false; $("upload").hidden = false;
+    status("Signed in. Choose the files.");
+  } catch (e) { status("Couldn't reach Drive: " + e.message.slice(0, 120)); }
+}
+
+function rows() {
+  const files = [...$("files").files];
+  $("list").innerHTML = "";
+  for (const f of files) {
+    const li = document.createElement("li");
+    li.textContent = f.name;
+    const s = document.createElement("span");
+    s.textContent = `${Math.max(1, Math.round(f.size / 1024))} KB`;
+    li.append(s);
+    $("list").append(li);
+  }
+  $("upload").disabled = !files.length;
+  $("next").style.display = "none";
+  status(files.length ? `${files.length} file${files.length > 1 ? "s" : ""} ready.` : "");
+}
+
+async function upload() {
+  const files = [...$("files").files], items = [...$("list").children];
+  $("upload").disabled = true;
+  let ok = 0;
+  for (const [i, f] of files.entries()) {
+    items[i].querySelector("span").textContent = "uploading…";
+    try {
+      const meta = new Blob([JSON.stringify({ name: f.name, parents: [folderId] })], { type: "application/json" });
+      const body = new FormData();
+      body.append("metadata", meta);
+      body.append("file", f);
+      await drive("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", { method: "POST", body });
+      items[i].className = "ok"; items[i].querySelector("span").textContent = "uploaded";
+      ok++;
+    } catch (e) {
+      items[i].className = "bad"; items[i].querySelector("span").textContent = "failed";
+    }
+  }
+  status(ok === files.length ? `All ${ok} uploaded.` : `${ok} of ${files.length} uploaded. Try the rest again.`);
+  if (ok) $("next").style.display = "block";
+  $("upload").disabled = false;
+}
+
+$("signin").onclick = () => {
+  if (!window.google) { status("Still loading, try again in a second."); return; }
+  client = client || google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID, scope: "https://www.googleapis.com/auth/drive.file", callback: signedIn });
+  client.requestAccessToken();
+};
+$("files").onchange = rows;
+$("upload").onclick = upload;
+</script>
+</body>
+</html>
