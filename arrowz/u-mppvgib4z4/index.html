@@ -10,6 +10,7 @@
 <style>
   :root { color-scheme: dark; --green: #00ff00; --muted: #9a9a9a; --panel: #111; --line: #262626; }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }   /* the buttons' display: block mustn't un-hide them before sign-in */
   body { margin: 0; background: #000; color: #fff; font: 17px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
   main { max-width: 480px; margin: 0 auto; padding: 32px 16px; }
   h1 { font-size: 26px; margin: 0 0 6px; }
@@ -27,6 +28,7 @@
   li span { color: var(--muted); white-space: nowrap; }
   li.ok span { color: var(--green); }
   li.bad span { color: #ff6b6b; }
+  .why { color: #ff9b9b; font-size: 14px; margin: -2px 4px 10px; word-break: break-word; }
   #status { min-height: 24px; color: var(--muted); }
   a { color: var(--green); }
   .next { display: none; }
@@ -38,7 +40,7 @@
   <p>Scorecards or My Data exports, into the inbox.</p>
 
   <button id="signin" class="solid">Sign in with Google</button>
-  <label class="pick" id="pickLabel" hidden>Choose files<input id="files" type="file" multiple accept=".zip,.pdf,application/zip,application/pdf"></label>
+  <label class="pick" id="pickLabel" hidden>Choose files<input id="files" type="file" multiple></label>
   <ul id="list"></ul>
   <button id="upload" class="solid" hidden disabled>Upload</button>
   <p id="status"></p>
@@ -56,9 +58,25 @@ const OWNER_SHA256 = [   // SHA-256 of the owner's email address(es), so the add
   "be9996d894a0862855f1892742d1c573dac7d1f08266cfa65eb20faad6d061af",
 ];
 const API = "https://www.googleapis.com/drive/v3";
-let token = null, folderId = null, client = null;
+let token = null, expires = 0, folderId = null, client = null;
 const $ = id => document.getElementById(id);
 const status = t => { $("status").textContent = t; };
+
+class Expired extends Error {}
+
+// Google's error text, short enough to read on a phone
+function explain(text) {
+  try {
+    const e = JSON.parse(text).error;
+    return `${e.code || ""} ${e.message || e.status || ""}`.trim();
+  } catch { return text.slice(0, 160); }
+}
+
+function needSignIn(message) {
+  token = null;
+  $("signin").hidden = false; $("signin").textContent = "Sign in again";
+  status(message);
+}
 
 async function sha256(text) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text.trim().toLowerCase()));
@@ -66,9 +84,12 @@ async function sha256(text) {
 }
 
 async function drive(path, opts = {}) {
+  if (!token) throw new Expired("Sign in with Google first.");
+  if (Date.now() > expires) throw new Expired("Your Google sign-in has expired.");
   const r = await fetch(path.startsWith("http") ? path : API + path,
                         { ...opts, headers: { Authorization: `Bearer ${token}`, ...(opts.headers || {}) } });
-  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  if (r.status === 401) throw new Expired("Your Google sign-in has expired.");
+  if (!r.ok) throw new Error(explain(await r.text()));
   return r.json();
 }
 
@@ -82,8 +103,9 @@ async function findFolder() {
 }
 
 async function signedIn(resp) {
-  if (resp.error) { status("Sign-in didn't complete."); return; }
+  if (resp.error) { status(`Sign-in didn't complete: ${resp.error_description || resp.error}`); return; }
   token = resp.access_token;
+  expires = Date.now() + (Number(resp.expires_in || 3600) - 60) * 1000;   // a minute's margin
   try {
     const me = await drive("/about?fields=user(emailAddress)");
     if (!OWNER_SHA256.includes(await sha256(me.user.emailAddress))) {
@@ -91,8 +113,8 @@ async function signedIn(resp) {
     }
     folderId = await findFolder();
     $("signin").hidden = true; $("pickLabel").hidden = false; $("upload").hidden = false;
-    status("Signed in. Choose the files.");
-  } catch (e) { status("Couldn't reach Drive: " + e.message.slice(0, 120)); }
+    status($("files").files.length ? "Signed in. Tap Upload." : "Signed in. Choose the files.");
+  } catch (e) { status("Couldn't reach Drive: " + e.message); }
 }
 
 function rows() {
@@ -112,21 +134,44 @@ function rows() {
 }
 
 async function upload() {
-  const files = [...$("files").files], items = [...$("list").children];
+  const files = [...$("files").files], items = [...$("list").querySelectorAll("li")];
+  $("list").querySelectorAll(".why").forEach(n => n.remove());   // last try's error notes
   $("upload").disabled = true;
   let ok = 0;
   for (const [i, f] of files.entries()) {
+    if (items[i].className === "ok") { ok++; continue; }   // already uploaded on an earlier try
     items[i].querySelector("span").textContent = "uploading…";
+    let why = "";
     try {
+      // Read the file first: a file picked from Google Drive in the phone's chooser is only a link
+      // to the cloud copy, and often can't be read
+      let bytes;
+      try { bytes = await f.arrayBuffer(); } catch { bytes = null; }
+      if (!bytes || !bytes.byteLength) {
+        throw new Error("Can't read this file. If you picked it from Google Drive, save it to the phone " +
+                        "(Downloads) first, then choose it from there.");
+      }
       const meta = new Blob([JSON.stringify({ name: f.name, parents: [folderId] })], { type: "application/json" });
       const body = new FormData();
       body.append("metadata", meta);
-      body.append("file", f);
+      body.append("file", new Blob([bytes], { type: f.type || "application/octet-stream" }), f.name);
       await drive("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", { method: "POST", body });
       items[i].className = "ok"; items[i].querySelector("span").textContent = "uploaded";
       ok++;
     } catch (e) {
       items[i].className = "bad"; items[i].querySelector("span").textContent = "failed";
+      if (e instanceof Expired) {
+        needSignIn(e.message.startsWith("Sign in")
+          ? "Sign in with Google first, then tap Upload."
+          : "Your Google sign-in has expired (it lasts an hour). Tap Sign in again, then Upload.");
+        $("upload").disabled = false;
+        return;
+      }
+      why = e.message || String(e);
+      const note = document.createElement("div");
+      note.className = "why";
+      note.textContent = why;
+      items[i].after(note);
     }
   }
   status(ok === files.length ? `All ${ok} uploaded.` : `${ok} of ${files.length} uploaded. Try the rest again.`);
@@ -137,7 +182,10 @@ async function upload() {
 $("signin").onclick = () => {
   if (!window.google) { status("Still loading, try again in a second."); return; }
   client = client || google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID, scope: "https://www.googleapis.com/auth/drive.file", callback: signedIn });
+    client_id: CLIENT_ID, scope: "https://www.googleapis.com/auth/drive.file", callback: signedIn,
+    error_callback: e => status(e && e.type === "popup_failed_to_open"
+      ? "The sign-in window was blocked. Allow pop-ups for this page, then try again."
+      : "The sign-in window was closed before finishing. Try again.") });
   client.requestAccessToken();
 };
 $("files").onchange = rows;
